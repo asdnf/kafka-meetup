@@ -5,6 +5,10 @@
 * replication factor
 * consumer group
 * kafka stream
+* ksql
+
+Download kafka from 
+https://apache-mirror.rbc.ru/pub/apache/kafka/2.7.0/kafka_2.13-2.7.0.tgz
 
 Kafka works on top of zookeeper. ZK must be started first, 
 and then run Kafka on top of it.
@@ -13,12 +17,12 @@ so we need a running Zookeeper cluster.
 
 Start zk first
 ```shell
-$ ./bin/zookeeper-server-start.sh config/zookeeper.properties
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
 ```
 This will start a Zookeeper service listening on port 2181. After this, 
 we can use another script to run the Kafka server:
 ```shell
-$ ./bin/kafka-server-start.sh config/server.properties
+$ bin/kafka-server-start.sh config/server.properties
 ```
 
 After a while, a Kafka broker will start. Let's add a few topics to this simple cluster:
@@ -48,8 +52,23 @@ Once we've found a list of topics, we can take a peek at the details
 of one specific topic. To do that, we can use the ``–describe –topic <topic name>`` 
 combination of options:
 ```shell
-$ ./bin/kafka-topics.sh --bootstrap-server=localhost:9092 --describe --topic users.registrations
+$ bin/kafka-topics.sh --bootstrap-server=localhost:9092 --describe --topic topic
+
 Topic: users.registrations      PartitionCount: 2       ReplicationFactor: 1    Configs: segment.bytes=1073741824
         Topic: users.registrations      Partition: 0    Leader: 0       Replicas: 0     Isr: 0
         Topic: users.registrations      Partition: 1    Leader: 0       Replicas: 0     Isr: 0
 ```
+
+Watch for messages by partition:
+```shell
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic topic --partition 5  --offset
+```
+
+See all topic stats:
+```shell
+$ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group testGroup --describe
+```
+
+
+https://www.youtube.com/watch?v=6UDwdUAqCOE
+1:01:05

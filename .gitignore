@@ -30,4 +30,6 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+.vscode
+.vagrant
+ kafka_2.12-2.7.0/logs

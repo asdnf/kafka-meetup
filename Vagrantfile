@@ -26,6 +26,8 @@ Vagrant.configure("2") do |config|
   # config.vm.network "forwarded_port", guest: 80, host: 8080
   
   config.vm.network "forwarded_port", guest: 22, host: 2020
+  config.vm.network "forwarded_port", guest: 2181, host: 2181
+  config.vm.network "forwarded_port", guest: 9092, host: 9092
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -46,7 +48,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder ".", "/vadata"
+  config.vm.synced_folder ".", "/home/vagrant/vadata"
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = 4096
@@ -56,6 +58,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt-get install -y docker.io maven git openjdk-8-jdk
-    usermod vagrant -a -G docker
+    echo 2 | update-alternatives --config java
+    usermod vagrant -aG docker
   SHELL
 end
